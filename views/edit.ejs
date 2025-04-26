@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Postify/edit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+    <div class="  h-screen bg-[url('https://imgs.search.brave.com/oJTrGjzR9PRtPps6kE2MS4pj0ccYA2Sa5HxtHvSo4lU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzExLzI1Lzk0LzE2/LzM2MF9GXzExMjU5/NDE2MzhfeWpqWlRQ/UmpEbnp5eUFYRHVD/SlFXTTd6S2g4TUlB/RWkuanBn')] bg-cover bg-center h-64 w-full  text-black p-10">
+        <div class="flex w-full m-5 items-end ">
+            <a class="bg-red-600 rounded-md px-3 py-2 text-sm" href="/logout"> Logout</a>
+        </div>
+        <h5 class="font-semibold font-serif">Edit Your Post</h5>
+        <form class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6" action="/update/<%= post._id %>" method="post">
+            <textarea
+                class="font-consolas  resize-none bg-transparent block border-2 border-zinc-800 rounded-md p-3 w-1/3 outline-none"
+                placeholder="Write about" name="content" id=""><%= post.content %></textarea> <!--post content is coming from the app.js it is the way to show the dynamic content in ejs-->
+            <input type="submit" class=" font-bold font-Liberation Mono py-2 bg-yellow-600 text-black block w-40 block rounded-md m-2 " value="Update Post">
+        </form>
+    </div>
+</body>
+
+</html>
