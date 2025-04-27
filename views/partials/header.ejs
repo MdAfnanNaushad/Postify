@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div
+      class="z-10 w-full fixed top-0 left-0 px-5 py-3 mb-2 bg-transparent shadow-md shadow-yellow-600 flex flex-col"
+    >
+      <!-- Top Row: Postify on the left, buttons on the right -->
+      <div class="flex justify-between items-center">
+        <h3
+          class="text-3xl tracking-wide font-serif text-4xl font-bold bg-gradient-to-r from-pink-500 via-yellow-500 to-teal-500 bg-clip-text text-transparent"
+        >
+          Postify
+        </h3>
+        <div class="flex space-x-4">
+          <a
+            class="bg-red-600 text-white rounded-md px-3 py-2 text-sm hover:bg-red-700 transition-all"
+            href="/logout"
+          >
+            Logout
+          </a>
+          <a
+            class="bg-green-600 text-white px-3 py-2 rounded-md text-sm hover:bg-green-700 transition-all"
+            href="/profile/upload"
+          >
+            Change Profile Picture
+          </a>
+        </div>
+      </div>
+      <!-- Second Row: Share your World -->
+      <p
+        class="font-serif tracking-tight text-lg  text-2xl font-bold bg-gradient-to-r from-yellow-300 via-red-500 to-teal-500 bg-clip-text text-transparent mt-2 inline-block"
+      >
+      Elevate Stories, Empower Change
+      </p>
+    </div>
+  </body>
+</html>

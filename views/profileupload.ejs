@@ -9,11 +9,13 @@
 </head>
 <body>
     <div class=" bg-[url('https://imgs.search.brave.com/oJTrGjzR9PRtPps6kE2MS4pj0ccYA2Sa5HxtHvSo4lU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzExLzI1Lzk0LzE2/LzM2MF9GXzExMjU5/NDE2MzhfeWpqWlRQ/UmpEbnp5eUFYRHVD/SlFXTTd6S2g4TUlB/RWkuanBn')] bg-cover bg-center h-64 w-full  h-screen bg-zinc-900 text-white p-10">
-        <h3 class="text-3xl">Upload Profile Picture</h3>
+        <%- include('partials/header') %>
+        <h3 class="text-3xl font-bold font-serif tracking-tight py-2 mt-28">Upload Profile Picture</h3>
         <form action="/profile/upload" method="POST" autocomplete="off" enctype="multipart/form-data"> <!--hmlog ko website ka backend jisme registered likekha hua aaega usko show krne ke liyeaction me route ka naam aut method me post use krna pdega-->
             <input type="file" name="profilepic" id="">
-            <input class="px-3 py-2 outline-none bg-blue-600 border-2 rounded-md border-solid border-zinc-800" type="submit" value="Uplaod File">
+            <input class="px-3 py-2 outline-none bg-blue-600 border-2 rounded-md border-solid border-zinc-800 hover:bg-gradient-to-r from-pink-500 via-yellow-500 to-teal-500 transition-all duration-300 ease-in-out transform hover:scale-105" type="submit" value="Upload ">
         </form>
     </div>
+    <%- include('partials/footer') %>
 </body>
 </html>
