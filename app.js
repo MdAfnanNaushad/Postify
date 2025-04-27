@@ -76,7 +76,6 @@ app.get("/like/:id", isloggedIn, async (req, res) => { //if any othe user want t
 
     await post.save(); //manually saving
     res.redirect("/profile"); ///.redirecting to the profile route
-    console.log(req.user);//log the user
 });// other user can loke one post
 
 app.get("/edit/:id", isloggedIn, async (req, res) => { // 
@@ -102,7 +101,6 @@ app.post("/post", isloggedIn, async (req, res) => { //thi is the route for the u
 })
 app.post("/register", upload.single("profilepic"), async (req, res) => { //this is the post route in which we only ensure the user that he/she has successfully registered after passing through the main route
     let { email, password, username, name, age,Profilepic } = req.body //extracting the data as email,name password username in the req.body
-    console.log(req.body);  //logging the req.body
     let user = await userModel.findOne({ email: email }); // finding the user on the basis of the email
     if (user) return res.status(500).send("user already registered"); //if the user has already registers and he is again trying to create account with the same credentials then he has shown ("user already registered")
 
@@ -126,7 +124,7 @@ app.post("/register", upload.single("profilepic"), async (req, res) => { //this 
 
 app.post("/login", async (req, res) => { //this is the login route to check if the user is already pred=sent in the database or not
     let { email, password } = req.body //extracting the email and psswird of the user whichis require for login in the login page
-    console.log(req.body);  //showing thedata after logging
+    // console.log(req.body);  //showing thedata after logging
     let user = await userModel.findOne({ email: email }); //finding the user on the bsis of email
     if (!user) return res.status(500).send("User not Found"); //if not found
 
