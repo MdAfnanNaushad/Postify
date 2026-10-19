@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Public Community Feed -->
+  <url>
+    <loc>http://localhost:5173/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- Eligible Public Author Profiles (No private/transactional /login or /register) -->
+  <url>
+    <loc>http://localhost:5173/user/680101b4c559a27c407642d6</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:5173/user/680d22337294a4a3046589f0</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:5173/user/680d24acd212a88075f911ca</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:5173/user/680e14e59ecb60c5a189c68b</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:5173/user/680e6b9513d4b16b248305a5</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

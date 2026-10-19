@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Exact Portal Color Palette */
+  --color-signal-blue: #007aff;
+  --color-ink-black: #000000;
+  --color-graphite: #3e3e3e;
+  --color-smoke: #636363;
+  --color-paper-white: #ffffff;
+  --color-ash-mist: #f7f7f7;
+  --color-dusk-base: #7a7fd4;
+
+  /* Typography Font Families */
+  --font-serif: "Perfectly Nineties Regular", "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Exact Border Radii Tokens */
+  --radius-7: 7px;
+  --radius-16: 16px;
+  --radius-22: 22px;
+  --radius-26: 26px;
+  --radius-30: 30px;
+  --radius-40: 40px;
+  --radius-50: 50px;
+
+  --radius-capsule: 22px;
+  --radius-card: 26px;
+  --radius-pill: 50px;
+  --radius-utility: 7px;
+
+  /* Shadows & Glow Rings */
+  --shadow-glow-ring: 0px 0px 0px 5px #f7f7f7;
+  --shadow-card-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  --shadow-capsule: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 8px 30px -4px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+}
+
+:root {
+  /* Twilight Editorial Atmosphere Gradient */
+  --sunset-gradient: linear-gradient(180deg, #4a7ff2 0%, #7b7ed8 30%, #c98ab5 65%, #e8a87c 100%);
+  
+  /* Light Theme Tokens */
+  --portal-canvas: #f7f7f7;
+  --portal-canvas-secondary: #ffffff;
+  --portal-card: #ffffff;
+  --portal-card-border: rgba(0, 0, 0, 0.07);
+  --portal-input: #ffffff;
+  --portal-input-border: rgba(0, 0, 0, 0.12);
+  --portal-text: #3e3e3e;
+  --portal-heading: #000000;
+  --portal-meta: #636363;
+  --portal-subtle: #9ca3af;
+  --portal-accent: #007aff;
+  --portal-nav-bg: rgba(255, 255, 255, 0.94);
+  --portal-nav-border: rgba(255, 255, 255, 0.8);
+  --portal-dropdown-bg: #ffffff;
+
+  --shadow-glow-ring: 0px 0px 0px 5px #f7f7f7;
+  --shadow-card-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  --shadow-capsule: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 8px 30px -4px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+
+  /* Portal Spacing Reference Tokens */
+  --portal-space-4: 4px;
+  --portal-space-6: 6px;
+  --portal-space-8: 8px;
+  --portal-space-10: 10px;
+  --portal-space-12: 12px;
+  --portal-space-14: 14px;
+  --portal-space-16: 16px;
+  --portal-space-20: 20px;
+  --portal-space-24: 24px;
+  --portal-space-36: 36px;
+  --portal-space-40: 40px;
+  --portal-space-45: 45px;
+  --portal-space-60: 60px;
+  --portal-space-80: 80px;
+  --portal-space-100: 100px;
+}
+
+.dark, [data-theme="dark"] {
+  /* Dark Theme Tokens (Phase 12 Design System) */
+  --portal-canvas: #0b0b0f;
+  --portal-canvas-secondary: #121218;
+  --portal-card: #191922;
+  --portal-card-border: #2c2c38;
+  --portal-input: #15151c;
+  --portal-input-border: #2c2c38;
+  --portal-text: #f5f5f7;
+  --portal-heading: #ffffff;
+  --portal-meta: #b8b8c5;
+  --portal-subtle: #9292a3;
+  --portal-accent: #007aff;
+  --portal-nav-bg: rgba(25, 25, 34, 0.92);
+  --portal-nav-border: rgba(255, 255, 255, 0.08);
+  --portal-dropdown-bg: #191922;
+
+  --shadow-glow-ring: 0px 0px 0px 5px #121218;
+  --shadow-card-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-capsule: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 8px 30px -4px rgba(0, 0, 0, 0.7), 0 4px 10px -2px rgba(0, 0, 0, 0.5);
+}
+
+/* Base resets & typography */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--portal-canvas);
+  color: var(--portal-text);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--portal-text);
+  background-color: var(--portal-canvas);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Globally remove native scrollbars across the website */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Atmospheric Hero Section with continuous seamless misty fade into the canvas */
+.twilight-hero {
+  background: linear-gradient(180deg, 
+    #4a7ff2 0%, 
+    #7b7ed8 25%, 
+    #b988bc 50%, 
+    #df9e8e 72%, 
+    #eed4c4 86%, 
+    #f7f7f7 100%
+  );
+  position: relative;
+}
+
+.dark .twilight-hero,
+[data-theme="dark"] .twilight-hero {
+  background: linear-gradient(180deg, 
+    #4a7ff2 0%, 
+    #7b7ed8 24%, 
+    #b988bc 46%, 
+    #df9e8e 64%, 
+    #e8a87c 75%,
+    #5a3a46 86%,
+    #231726 94%,
+    #0b0b0f 100%
+  );
+}
+
+.twilight-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    color-mix(in srgb, var(--portal-canvas) 20%, transparent) 30%, 
+    color-mix(in srgb, var(--portal-canvas) 60%, transparent) 60%, 
+    color-mix(in srgb, var(--portal-canvas) 90%, transparent) 85%, 
+    var(--portal-canvas) 100%
+  );
+  pointer-events: none;
+}
+
+/* Floating Navigation Capsule Glassmorphism */
+.nav-capsule {
+  border-radius: var(--radius-capsule);
+  background: var(--portal-nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-capsule);
+  border: 1px solid var(--portal-nav-border);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Paper-White / Elevated Dark Card Surface */
+.portal-card {
+  background-color: var(--portal-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-glow-ring), var(--shadow-card-subtle);
+  border: 1px solid var(--portal-card-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.portal-card:hover {
+  box-shadow: var(--shadow-glow-ring), var(--shadow-card-hover);
+}
+
+/* Editorial Serif Headings */
+.editorial-h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.editorial-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+/* Content Container constraints with consistent gutters and automatic centering */
+.portal-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 480px) {
+  .portal-container {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .portal-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portal-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* Form Container Constraint with comfortable desktop reading bounds */
+.portal-form-container {
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Editorial Story/Profile Constraint */
+.portal-content-container {
+  width: 100%;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Landing page section vertical spacing rhythm */
+.landing-section {
+  margin-bottom: clamp(5rem, 10vw, 11rem);
+}
+
+/* Smooth fade-up keyframes for JS-free fallback */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Accessible Keyboard Focus Indicators */
+:focus-visible {
+  outline: 2px solid var(--portal-accent);
+  outline-offset: 2px;
+}
+
+/* Universal Reduced-Motion Accessibility Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

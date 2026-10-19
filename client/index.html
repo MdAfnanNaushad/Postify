@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Postify — Elevate Stories, Empower Change</title>
+    <meta name="description" content="Postify is an intimate, editorial community platform for sharing thoughts, micro-essays, and connecting with thoughtful creators." />
+    <link rel="icon" type="image/png" href="/postifylogo2.png" />
+    <!-- Google Fonts: Inter (400, 500, 600) and Playfair Display (400, 500, 600) as documented high-fidelity display serif fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('postify-theme') || 'system';
+          var isDark = stored === 'dark' || (stored === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-[var(--portal-canvas)] text-[var(--portal-text)] font-sans antialiased min-h-screen selection:bg-[#007aff]/20 selection:text-[#007aff] transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

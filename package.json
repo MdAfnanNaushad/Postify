@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "test": "vitest run --fileParallelism=false backend.test.mjs backend.security.test.mjs backend.phase2.test.mjs backend.phase3.test.mjs backend.phase4.test.mjs backend.phase5.test.mjs backend.phase6.test.mjs backend.phase7.test.mjs backend.audit.test.mjs backend.phase8.test.mjs backend.phase9.test.mjs backend.phase10.test.mjs backend.phase10.1.test.mjs backend.phase11.test.mjs backend.phase12.test.mjs",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "build:client": "npm --prefix client run build",
+    "start": "node server/src/server.js",
+    "server": "nodemon server/src/server.js",
+    "dev": "nodemon server/src/server.js",
+    "digest:run": "node server/src/scripts/runDigestJob.js"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +18,23 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "express-rate-limit": "^8.7.1",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.2",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "resend": "^6.34.1",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.14.0",
+    "socket.io-client": "^4.8.4",
+    "supertest": "^7.3.1",
+    "vitest": "^5.0.5"
   }
 }

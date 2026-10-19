@@ -1,0 +1,112 @@
+# ==============================================================================
+# POSTIFY — RENDER BLUEPRINT (render.yaml)
+# Unified Web Service (Express API + Vite React Frontend) & Scheduled Digest Cron
+# ==============================================================================
+# Docs: https://render.com/docs/blueprint-spec
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Postify Unified Web Application (API + SPA)
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: postify-app
+    runtime: node
+    plan: starter # Starter plan allows persistent disk mounting for upload durability
+    region: oregon # Change to your preferred region (e.g. frankfurt, ohio, singapore)
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+
+    # Optional Persistent Disk for upload durability across redeployments:
+    # Note: Render persistent disks require a paid plan (Starter or higher).
+    # If deploying on Free tier without a disk, uploads will be ephemeral upon dyno restarts.
+    disk:
+      name: postify-uploads
+      mountPath: /var/data/uploads
+      sizeGB: 1
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+
+      # In production, JWT_SECRET must be at least 32 characters
+      - key: JWT_SECRET
+        generateValue: true
+
+      # Token and Cookie Configuration
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: COOKIE_SAMESITE
+        value: lax
+
+      # Upload directory pointing to mounted persistent disk
+      - key: UPLOADS_DIR
+        value: /var/data/uploads
+
+      # MongoDB Atlas Connection String (Must be set manually in Render Dashboard)
+      - key: MONGODB_URI
+        sync: false
+
+      # App URLs (Set to your Render URL: e.g. https://postify-app.onrender.com or custom domain)
+      - key: CLIENT_URL
+        sync: false
+      - key: CANONICAL_APP_URL
+        sync: false
+
+      # Resend Email Integration (Weekly Developer Digest)
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false
+      - key: RESEND_FROM_NAME
+        value: Postify Weekly Digest
+
+  # ----------------------------------------------------------------------------
+  # 2. Postify Weekly Developer Digest Scheduled Cron Job
+  # ----------------------------------------------------------------------------
+  - type: cron
+    name: postify-digest-cron
+    runtime: node
+    plan: starter
+    region: oregon
+    # Runs every Monday at 09:00 UTC (matches ISO week boundary)
+    schedule: "0 9 * * 1"
+    buildCommand: npm install
+    startCommand: npm run digest:run
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromService:
+          type: web
+          name: postify-app
+          envVarKey: MONGODB_URI
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: postify-app
+          envVarKey: CLIENT_URL
+      - key: CANONICAL_APP_URL
+        fromService:
+          type: web
+          name: postify-app
+          envVarKey: CANONICAL_APP_URL
+      - key: RESEND_API_KEY
+        fromService:
+          type: web
+          name: postify-app
+          envVarKey: RESEND_API_KEY
+      - key: RESEND_FROM_EMAIL
+        fromService:
+          type: web
+          name: postify-app
+          envVarKey: RESEND_FROM_EMAIL
+      - key: RESEND_FROM_NAME
+        value: Postify Weekly Digest
