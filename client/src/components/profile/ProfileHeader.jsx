@@ -78,14 +78,19 @@ export const ProfileHeader = ({
 
   const storyCount = user?.posts?.length || 0;
   const bannerImage = user?.Bannerpic || user?.bannerPic;
+  const bannerSrc = bannerImage
+    ? (bannerImage.startsWith('http://') || bannerImage.startsWith('https://')
+        ? bannerImage
+        : `/uploads/${bannerImage}`)
+    : null;
 
   return (
     <div className="portal-card bg-[var(--portal-card)] mb-10 border border-[var(--portal-card-border)] overflow-hidden shadow-sm">
       {/* Banner Section with Optional Custom Uploaded Image */}
       <div className="h-36 sm:h-52 bg-gradient-to-r from-[#4a7ff2]/20 via-[#b988bc]/20 to-[#df9e8e]/20 relative overflow-hidden group">
-        {bannerImage ? (
+        {bannerSrc ? (
           <img
-            src={`/uploads/${bannerImage}`}
+            src={bannerSrc}
             alt="Profile Banner"
             className="w-full h-full object-cover"
           />

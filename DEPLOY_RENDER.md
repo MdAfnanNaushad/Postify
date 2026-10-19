@@ -100,17 +100,25 @@ Render Web Services run in containerized environments with ephemeral filesystems
 
 ### Recommended Approaches
 
-#### Option A: Render Persistent Disk (Smallest Safe Architectural Change)
+#### Option A: ImageKit Cloud Storage (Recommended & Native Integration)
+
+Postify includes first-class native integration with **ImageKit** (`imagekit.io`) for cloud media storage, global CDN delivery, and automatic image optimization. This completely eliminates the need for expensive Render persistent disks and works seamlessly across both free and paid Render tiers:
+
+- **Permanent Storage**: Avatars and profile banners are streamed directly to ImageKit's global CDN (`/postify/avatars` and `/postify/banners`).
+- **Disk Clean**: Temporary upload files on Render's container disk are immediately unlinked after successful cloud transfer, preventing disk exhaustion.
+- **Graceful Fallback**: If ImageKit environment variables are omitted or empty, Postify seamlessly falls back to local disk storage (`UPLOADS_DIR` or `./public/images/uploads/`).
+- **Setup in 2 minutes**:
+  1. Sign up for a free account at [imagekit.io](https://imagekit.io).
+  2. Navigate to **Developer Options > API Keys**.
+  3. Copy your **Public Key**, **Private Key**, and **URL-Endpoint** (e.g., `https://ik.imagekit.io/your_id`).
+  4. Add these three keys to your Render environment variables or `.env`.
+
+#### Option B: Render Persistent Disk (Alternative Local Storage)
 - If you run the web service on a **Starter** plan ($7/mo), you can attach a **Persistent Disk** ($0.25/GB/mo).
 - Mount Path: `/var/data/uploads`
 - Size: 1 GB (or as required)
 - Environment Variable: `UPLOADS_DIR=/var/data/uploads`
-- *How it works*: Postify's upload middleware dynamically detects `UPLOADS_DIR` and stores all new uploads directly on the persistent volume. The server serves both `/uploads` and `/images/uploads` from this mount.
-
-#### Option B: Object Storage (AWS S3 / Cloudinary)
-- For multi-instance horizontal scaling, object storage is ideal.
-- Uploads are streamed to cloud buckets and media URLs point to CloudFront/S3 or Cloudinary CDN.
-- *Status*: If credentials are not yet available, `UPLOADS_DIR` serves as the tested local abstraction.
+- *How it works*: Postify's upload middleware dynamically detects `UPLOADS_DIR` and stores local uploads on the persistent volume.
 
 ---
 
@@ -127,8 +135,11 @@ Render Web Services run in containerized environments with ephemeral filesystems
    - `CANONICAL_APP_URL`: Same as `CLIENT_URL`.
    - `RESEND_API_KEY`: Your Resend API key (`re_...`).
    - `RESEND_FROM_EMAIL`: Verified sender address (e.g. `digest@yourdomain.com`).
+   - `IMAGEKIT_PUBLIC_KEY`: Your ImageKit public API key.
+   - `IMAGEKIT_PRIVATE_KEY`: Your ImageKit private API key.
+   - `IMAGEKIT_URL_ENDPOINT`: Your ImageKit URL endpoint (`https://ik.imagekit.io/...`).
 5. Click **Apply**. Render will provision:
-   - `postify-app` (Web Service with Persistent Disk).
+   - `postify-app` (Web Service).
    - `postify-digest-cron` (Weekly Cron Job).
 
 ---
@@ -143,8 +154,8 @@ If not using Blueprints, create the services manually:
 - **Build Command**: `npm run build`
 - **Start Command**: `npm start`
 - **Health Check Path**: `/health`
-- **Plan**: Starter (if attaching disk) or Free.
-- **Disk** (Optional for uploads):
+- **Plan**: Free or Starter.
+- **Disk** (Optional if using local disk instead of ImageKit):
   - Name: `postify-uploads`
   - Mount Path: `/var/data/uploads`
   - Size: 1 GB
@@ -161,7 +172,10 @@ If not using Blueprints, create the services manually:
 | `COOKIE_SAMESITE` | `lax` |
 | `CLIENT_URL` | `https://your-service.onrender.com` |
 | `CANONICAL_APP_URL` | `https://your-service.onrender.com` |
-| `UPLOADS_DIR` | `/var/data/uploads` (if disk mounted) |
+| `UPLOADS_DIR` | `/var/data/uploads` (if persistent disk mounted) |
+| `IMAGEKIT_PUBLIC_KEY` | `public_xxxxxxxxxxxxxxxx` (from ImageKit dashboard) |
+| `IMAGEKIT_PRIVATE_KEY` | `private_xxxxxxxxxxxxxxx` (from ImageKit dashboard) |
+| `IMAGEKIT_URL_ENDPOINT` | `https://ik.imagekit.io/your_id` (from ImageKit dashboard) |
 | `RESEND_API_KEY` | `re_xxxxxxxxxxxxxxxx` |
 | `RESEND_FROM_EMAIL` | `digest@yourdomain.com` |
 | `RESEND_FROM_NAME` | `Postify Weekly Digest` |

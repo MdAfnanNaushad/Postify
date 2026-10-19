@@ -298,7 +298,9 @@ export const PostDetailPage = () => {
           property="og:image"
           content={
             author.Profilepic
-              ? `http://localhost:5173/uploads/${author.Profilepic}`
+              ? (author.Profilepic.startsWith('http://') || author.Profilepic.startsWith('https://')
+                  ? author.Profilepic
+                  : `http://localhost:5173/uploads/${author.Profilepic}`)
               : 'http://localhost:5173/uploads/Profilepic.jpg'
           }
         />

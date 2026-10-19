@@ -181,7 +181,9 @@ app.get('/post/:id', async (req, res, next) => {
     const authorName = post.user?.name || post.user?.username || 'Postify Author';
     const postUrl = `${clientBaseUrl}/post/${post._id}`;
     const avatarUrl = post.user?.Profilepic
-      ? `${clientBaseUrl}/uploads/${post.user.Profilepic}`
+      ? (post.user.Profilepic.startsWith('http://') || post.user.Profilepic.startsWith('https://')
+          ? post.user.Profilepic
+          : `${clientBaseUrl}/uploads/${post.user.Profilepic}`)
       : `${clientBaseUrl}/uploads/Profilepic.jpg`;
 
     if (isCrawler) {
@@ -278,7 +280,9 @@ const handleProjectPreview = async (req, res, next) => {
     const ownerUsername = project.owner?.username || 'developer';
     const projectUrl = `${clientBaseUrl}/projects/${ownerUsername}/${project.slug}`;
     const avatarUrl = project.owner?.Profilepic
-      ? `${clientBaseUrl}/uploads/${project.owner.Profilepic}`
+      ? (project.owner.Profilepic.startsWith('http://') || project.owner.Profilepic.startsWith('https://')
+          ? project.owner.Profilepic
+          : `${clientBaseUrl}/uploads/${project.owner.Profilepic}`)
       : `${clientBaseUrl}/uploads/Profilepic.jpg`;
 
     if (isCrawler) {

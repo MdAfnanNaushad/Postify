@@ -287,5 +287,117 @@ describe('Phase 12 — Render Deployment Preparation & Production Readiness Test
       }
     });
   });
+
+  describe('11. ImageKit Cloud Media Storage Integration & Fallback', () => {
+    it('isImageKitConfigured() returns false when credentials are empty or placeholders', async () => {
+      const { isImageKitConfigured } = await import('./server/src/services/imageKitService.js');
+      const savedPublic = process.env.IMAGEKIT_PUBLIC_KEY;
+      const savedPrivate = process.env.IMAGEKIT_PRIVATE_KEY;
+      const savedEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
+
+      try {
+        delete process.env.IMAGEKIT_PUBLIC_KEY;
+        delete process.env.IMAGEKIT_PRIVATE_KEY;
+        delete process.env.IMAGEKIT_URL_ENDPOINT;
+        expect(isImageKitConfigured()).toBe(false);
+
+        process.env.IMAGEKIT_PUBLIC_KEY = 'public_your_imagekit_public_key';
+        process.env.IMAGEKIT_PRIVATE_KEY = 'private_your_imagekit_private_key';
+        process.env.IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/your_id';
+        expect(isImageKitConfigured()).toBe(false);
+      } finally {
+        if (savedPublic) process.env.IMAGEKIT_PUBLIC_KEY = savedPublic; else delete process.env.IMAGEKIT_PUBLIC_KEY;
+        if (savedPrivate) process.env.IMAGEKIT_PRIVATE_KEY = savedPrivate; else delete process.env.IMAGEKIT_PRIVATE_KEY;
+        if (savedEndpoint) process.env.IMAGEKIT_URL_ENDPOINT = savedEndpoint; else delete process.env.IMAGEKIT_URL_ENDPOINT;
+      }
+    });
+
+    it('isImageKitConfigured() returns true when valid credentials are provided', async () => {
+      const { isImageKitConfigured } = await import('./server/src/services/imageKitService.js');
+      const savedPublic = process.env.IMAGEKIT_PUBLIC_KEY;
+      const savedPrivate = process.env.IMAGEKIT_PRIVATE_KEY;
+      const savedEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
+
+      try {
+        process.env.IMAGEKIT_PUBLIC_KEY = 'public_real_test_key_123';
+        process.env.IMAGEKIT_PRIVATE_KEY = 'private_real_test_key_456';
+        process.env.IMAGEKIT_URL_ENDPOINT = 'https://ik.imagekit.io/testuser';
+        expect(isImageKitConfigured()).toBe(true);
+      } finally {
+        if (savedPublic) process.env.IMAGEKIT_PUBLIC_KEY = savedPublic; else delete process.env.IMAGEKIT_PUBLIC_KEY;
+        if (savedPrivate) process.env.IMAGEKIT_PRIVATE_KEY = savedPrivate; else delete process.env.IMAGEKIT_PRIVATE_KEY;
+        if (savedEndpoint) process.env.IMAGEKIT_URL_ENDPOINT = savedEndpoint; else delete process.env.IMAGEKIT_URL_ENDPOINT;
+      }
+    });
+
+    it('uploadToImageKit throws descriptive error if called when unconfigured', async () => {
+      const { uploadToImageKit } = await import('./server/src/services/imageKitService.js');
+      const savedPublic = process.env.IMAGEKIT_PUBLIC_KEY;
+      const savedPrivate = process.env.IMAGEKIT_PRIVATE_KEY;
+      const savedEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
+
+      try {
+        delete process.env.IMAGEKIT_PUBLIC_KEY;
+        delete process.env.IMAGEKIT_PRIVATE_KEY;
+        delete process.env.IMAGEKIT_URL_ENDPOINT;
+
+        await expect(
+          uploadToImageKit({
+            fileBuffer: Buffer.from('fake image'),
+            fileName: 'test.jpg'
+          })
+        ).rejects.toThrow(/ImageKit is not configured/);
+      } finally {
+        if (savedPublic) process.env.IMAGEKIT_PUBLIC_KEY = savedPublic; else delete process.env.IMAGEKIT_PUBLIC_KEY;
+        if (savedPrivate) process.env.IMAGEKIT_PRIVATE_KEY = savedPrivate; else delete process.env.IMAGEKIT_PRIVATE_KEY;
+        if (savedEndpoint) process.env.IMAGEKIT_URL_ENDPOINT = savedEndpoint; else delete process.env.IMAGEKIT_URL_ENDPOINT;
+      }
+    });
+
+    it('avatar and banner upload routes gracefully fall back to local disk storage when ImageKit is not configured', async () => {
+      const testSuffix = Date.now();
+      const userRes = await request(app)
+        .post('/api/auth/register')
+        .send({
+          username: `ik_user_${testSuffix}`,
+          email: `ik_user_${testSuffix}@example.com`,
+          password: 'Password123!',
+          name: 'ImageKit Test User'
+        });
+      expect(userRes.status).toBe(201);
+      const cookie = userRes.headers['set-cookie'];
+
+      // Valid 1x1 GIF buffer (GIF89a)
+      const validGifBuffer = Buffer.from([
+        0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00,
+        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x21,
+        0xf9, 0x04, 0x01, 0x00, 0x00, 0x00, 0x00, 0x2c, 0x00, 0x00,
+        0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x01, 0x44,
+        0x00, 0x3b
+      ]);
+
+      // Upload avatar without ImageKit configured
+      const avatarRes = await request(app)
+        .post('/api/users/me/avatar')
+        .set('Cookie', cookie)
+        .attach('profilepic', validGifBuffer, 'test-avatar.gif');
+
+      expect(avatarRes.status).toBe(200);
+      expect(avatarRes.body.success).toBe(true);
+      expect(avatarRes.body.Profilepic).toBeDefined();
+      expect(avatarRes.body.Profilepic).toMatch(/\.gif$/i);
+
+      // Upload banner without ImageKit configured
+      const bannerRes = await request(app)
+        .post('/api/users/me/banner')
+        .set('Cookie', cookie)
+        .attach('bannerpic', validGifBuffer, 'test-banner.gif');
+
+      expect(bannerRes.status).toBe(200);
+      expect(bannerRes.body.success).toBe(true);
+      expect(bannerRes.body.Bannerpic).toBeDefined();
+      expect(bannerRes.body.Bannerpic).toMatch(/\.gif$/i);
+    });
+  });
 });
 

@@ -315,6 +315,7 @@ exports.updateAvatar = async (req, res, next) => {
 
     const fs = require('fs');
     const { isValidImageBuffer } = require('../middleware/upload');
+    const { isImageKitConfigured, uploadToImageKit } = require('../services/imageKitService');
     const buffer = fs.readFileSync(req.file.path);
 
     // Deep content validation: inspect magic byte file signature
@@ -327,9 +328,31 @@ exports.updateAvatar = async (req, res, next) => {
       });
     }
 
+    let finalImageUrl = req.file.filename;
+
+    if (isImageKitConfigured()) {
+      try {
+        const ikRes = await uploadToImageKit({
+          fileBuffer: buffer,
+          fileName: req.file.filename,
+          folder: '/postify/avatars',
+          tags: ['avatar', req.user.username || 'user']
+        });
+        if (ikRes && ikRes.url) {
+          finalImageUrl = ikRes.url;
+          // Clean up local temporary file since file is now hosted on ImageKit CDN
+          try {
+            fs.unlinkSync(req.file.path);
+          } catch (_) {}
+        }
+      } catch (uploadErr) {
+        console.error('[ImageKit Avatar Upload Error]:', uploadErr.message);
+      }
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { Profilepic: req.file.filename },
+      { Profilepic: finalImageUrl },
       { new: true }
     ).select('-password');
 
@@ -359,6 +382,7 @@ exports.updateBanner = async (req, res, next) => {
 
     const fs = require('fs');
     const { isValidImageBuffer } = require('../middleware/upload');
+    const { isImageKitConfigured, uploadToImageKit } = require('../services/imageKitService');
     const buffer = fs.readFileSync(req.file.path);
 
     // Deep content validation: inspect magic byte file signature
@@ -370,9 +394,30 @@ exports.updateBanner = async (req, res, next) => {
       });
     }
 
+    let finalBannerUrl = req.file.filename;
+
+    if (isImageKitConfigured()) {
+      try {
+        const ikRes = await uploadToImageKit({
+          fileBuffer: buffer,
+          fileName: req.file.filename,
+          folder: '/postify/banners',
+          tags: ['banner', req.user.username || 'user']
+        });
+        if (ikRes && ikRes.url) {
+          finalBannerUrl = ikRes.url;
+          try {
+            fs.unlinkSync(req.file.path);
+          } catch (_) {}
+        }
+      } catch (uploadErr) {
+        console.error('[ImageKit Banner Upload Error]:', uploadErr.message);
+      }
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { Bannerpic: req.file.filename },
+      { Bannerpic: finalBannerUrl },
       { new: true }
     ).select('-password');
 

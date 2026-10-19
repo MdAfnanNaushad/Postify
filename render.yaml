@@ -67,6 +67,14 @@ services:
       - key: RESEND_FROM_NAME
         value: Postify Weekly Digest
 
+      # ImageKit Cloud Media Storage (Avatars and Banners)
+      - key: IMAGEKIT_PUBLIC_KEY
+        sync: false
+      - key: IMAGEKIT_PRIVATE_KEY
+        sync: false
+      - key: IMAGEKIT_URL_ENDPOINT
+        sync: false
+
   # ----------------------------------------------------------------------------
   # 2. Postify Weekly Developer Digest Scheduled Cron Job
   # ----------------------------------------------------------------------------

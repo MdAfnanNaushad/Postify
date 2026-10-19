@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const User = require('../models/user');
 const { getJwtSecret } = require('../middleware/auth');
+const { isImageKitConfigured, uploadToImageKit } = require('../services/imageKitService');
 
 const generateToken = (user) => {
   const secret = getJwtSecret();
@@ -89,6 +91,25 @@ exports.register = async (req, res, next) => {
     let profilePicFilename = 'Profilepic.jpg';
     if (req.file) {
       profilePicFilename = req.file.filename;
+      if (isImageKitConfigured()) {
+        try {
+          const buffer = fs.readFileSync(req.file.path);
+          const ikRes = await uploadToImageKit({
+            fileBuffer: buffer,
+            fileName: req.file.filename,
+            folder: '/postify/avatars',
+            tags: ['avatar', username.trim()]
+          });
+          if (ikRes && ikRes.url) {
+            profilePicFilename = ikRes.url;
+            try {
+              fs.unlinkSync(req.file.path);
+            } catch (_) {}
+          }
+        } catch (uploadErr) {
+          console.error('[ImageKit Registration Avatar Error]:', uploadErr.message);
+        }
+      }
     }
 
     const user = await User.create({
