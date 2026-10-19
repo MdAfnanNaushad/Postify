@@ -4,12 +4,14 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import app from './server/src/app.js';
 
+import { getMongoUri } from './server/src/config/db.js';
+
 describe('Postify Server API Endpoints & Data Preservation', () => {
   let sampleUserId;
   let samplePostId;
 
   beforeAll(async () => {
-    const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/miniproject';
+    const uri = getMongoUri();
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(uri);
     }

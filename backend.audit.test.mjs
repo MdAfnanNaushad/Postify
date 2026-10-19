@@ -15,7 +15,7 @@ describe('Part A — Phases 5, 6 & 7 Audit & Regression Verification', () => {
   let postA;
 
   beforeAll(async () => {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/miniproject_test';
+    const mongoUri = process.env.TEST_MONGODB_URI || 'mongodb://127.0.0.1:27017/miniproject_test';
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(mongoUri);
     }

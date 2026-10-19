@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const getMongoUri = () => {
   const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
-  if (!uri) {
+  const hasPlaceholders = uri && uri.includes('<') && uri.includes('>');
+  if (!uri || hasPlaceholders) {
     if (process.env.NODE_ENV === 'production') {
-      console.error('\x1b[31m%s\x1b[0m', 'FATAL DATABASE ERROR: MONGODB_URI (or MONGO_URI) is required in production mode.');
+      console.error('\x1b[31m%s\x1b[0m', 'FATAL DATABASE ERROR: MONGODB_URI (or MONGO_URI) is required and must not contain unreplaced placeholders (<cluster>, <password>, etc.) in production mode.');
       console.error('\x1b[31m%s\x1b[0m', 'Postify will not start without a configured production MongoDB connection string. Local fallback is disabled in production.');
       process.exit(1);
     }
