@@ -33,13 +33,7 @@ import {
   Copy
 } from 'lucide-react';
 
-const STATUS_STYLES = {
-  in_progress: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-  planned: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
-  paused: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-  archived: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20'
-};
+import { ProjectStatusBadge } from '../components/projects/ProjectStatusBadge';
 
 const ENTRY_TYPE_BADGES = {
   milestone: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
@@ -196,7 +190,6 @@ export const ProjectDetailPage = () => {
   }
 
   const ownerObj = typeof project.owner === 'object' ? project.owner : null;
-  const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES.in_progress;
 
   return (
     <Layout>
@@ -260,9 +253,7 @@ export const ProjectDetailPage = () => {
         {/* Project Hero Header */}
         <div className="portal-card p-6 sm:p-8 rounded-3xl border border-[var(--portal-card-border)] bg-[var(--portal-card)] mb-8 shadow-xs">
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold border capitalize ${statusClass}`}>
-              {project.status ? project.status.replace('_', ' ') : 'In Progress'}
-            </span>
+            <ProjectStatusBadge status={project.status} size="md" />
 
             {project.visibility === 'private' ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">

@@ -12,14 +12,7 @@ import {
 } from 'lucide-react';
 import { getMyProjects, getUserProjects } from '../../services/projectService';
 import { ProjectModal } from '../projects/ProjectModal';
-
-const STATUS_STYLES = {
-  in_progress: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-  planned: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
-  paused: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-  archived: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20'
-};
+import { ProjectStatusBadge } from '../projects/ProjectStatusBadge';
 
 export const SelectedProjectsSection = ({
   projects = [],
@@ -154,7 +147,6 @@ export const SelectedProjectsSection = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* 1. Dedicated Projects */}
         {dedicatedProjects.map((project) => {
-          const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES.in_progress;
           const identifier = project.slug || project._id;
 
           return (
@@ -165,11 +157,7 @@ export const SelectedProjectsSection = ({
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border capitalize ${statusClass}`}
-                  >
-                    {project.status ? project.status.replace('_', ' ') : 'In Progress'}
-                  </span>
+                  <ProjectStatusBadge status={project.status} size="xs" />
 
                   <div className="flex items-center gap-1.5">
                     {project.visibility === 'private' ? (

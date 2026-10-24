@@ -11,3 +11,4 @@ export { LoadingSkeleton, EmptyState, ErrorMessage, ConfirmationDialog } from '.
 export { MarkdownContent } from './MarkdownContent';
 export { LoadingScreen } from './LoadingScreen';
 export { ErrorBoundary } from './ErrorBoundary';
+export { ProjectStatusBadge, STATUS_CONFIG, normalizeStatus, getStatusConfig } from '../projects/ProjectStatusBadge';

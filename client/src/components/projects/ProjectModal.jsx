@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, FolderGit2, Check, Globe, Lock, Code2, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { createProject, updateProject } from '../../services/projectService';
+import { STATUS_CONFIG } from './ProjectStatusBadge';
 
 const STATUS_OPTIONS = [
   { value: 'planned', label: 'Planned' },
@@ -237,26 +238,36 @@ export const ProjectModal = ({ isOpen, onClose, project = null, onSaved }) => {
             </div>
           </div>
 
-          {/* Status & Visibility Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div>
-              <label className="block text-xs font-semibold text-[var(--portal-heading)] mb-1.5">
-                Project Status
-              </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-[var(--portal-card)] border border-[var(--portal-card-border)] text-[var(--portal-heading)] focus:outline-none focus:border-[#007aff] transition-colors cursor-pointer"
-              >
-                {STATUS_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+          {/* Project Status */}
+          <div>
+            <label className="block text-xs font-semibold text-[var(--portal-heading)] mb-2">
+              Project Status
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {STATUS_OPTIONS.map((opt) => {
+                const isSelected = status === opt.value;
+                const cfg = STATUS_CONFIG[opt.value] || STATUS_CONFIG.in_progress;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setStatus(opt.value)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                      isSelected
+                        ? `${cfg.activeBtnClass} ring-2 ring-black/5 dark:ring-white/10`
+                        : 'border-[var(--portal-card-border)] bg-[var(--portal-card)] text-[var(--portal-meta)] hover:text-[var(--portal-heading)] hover:border-black/20 dark:hover:border-white/20'
+                    }`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${cfg.dotClass}`} />
+                    <span>{opt.label}</span>
+                  </button>
+                );
+              })}
             </div>
+          </div>
 
-            <div>
+          {/* Visibility */}
+          <div>
               <label className="block text-xs font-semibold text-[var(--portal-heading)] mb-1.5">
                 Visibility
               </label>
@@ -287,7 +298,6 @@ export const ProjectModal = ({ isOpen, onClose, project = null, onSaved }) => {
                 </button>
               </div>
             </div>
-          </div>
 
           {/* URLs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">

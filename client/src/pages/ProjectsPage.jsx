@@ -23,6 +23,8 @@ import {
   Filter
 } from 'lucide-react';
 
+import { ProjectStatusBadge, normalizeStatus } from '../components/projects/ProjectStatusBadge';
+
 const STATUS_FILTERS = [
   { value: 'all', label: 'All Statuses' },
   { value: 'in_progress', label: 'In Progress' },
@@ -31,14 +33,6 @@ const STATUS_FILTERS = [
   { value: 'paused', label: 'Paused' },
   { value: 'archived', label: 'Archived' }
 ];
-
-const STATUS_STYLES = {
-  in_progress: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-  completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-  planned: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
-  paused: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-  archived: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20'
-};
 
 export const ProjectsPage = () => {
   const { user, isAuthenticated } = useAuth();
@@ -60,7 +54,7 @@ export const ProjectsPage = () => {
         if (res.success) {
           let list = res.projects || [];
           if (statusFilter !== 'all') {
-            list = list.filter((p) => p.status === statusFilter);
+            list = list.filter((p) => normalizeStatus(p.status) === statusFilter);
           }
           if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase();
@@ -257,7 +251,6 @@ export const ProjectsPage = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.map((project) => {
-              const statusClass = STATUS_STYLES[project.status] || STATUS_STYLES.in_progress;
               const isOwner = user && project.owner && (project.owner._id === user._id || project.owner === user._id);
               const identifier = project.slug || project._id;
 
@@ -270,11 +263,7 @@ export const ProjectsPage = () => {
                   <div>
                     {/* Top row: Status and Visibility */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border capitalize ${statusClass}`}
-                      >
-                        {project.status ? project.status.replace('_', ' ') : 'In Progress'}
-                      </span>
+                      <ProjectStatusBadge status={project.status} size="xs" />
 
                       <div className="flex items-center gap-1.5">
                         {project.visibility === 'private' ? (
