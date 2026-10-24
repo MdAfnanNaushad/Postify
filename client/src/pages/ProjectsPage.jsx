@@ -265,7 +265,7 @@ export const ProjectsPage = () => {
                 <Link
                   key={project._id}
                   to={`/projects/${identifier}`}
-                  className="portal-card p-5 rounded-2xl border border-[var(--portal-card-border)] bg-[var(--portal-card)] hover:border-[#007aff]/50 transition-all flex flex-col justify-between group shadow-2xs hover:shadow-md"
+                  className="portal-card p-5 rounded-2xl border border-[var(--portal-card-border)] bg-[var(--portal-card)] hover:border-[#007aff]/50 transition-all flex flex-col justify-between group shadow-2xs hover:shadow-md overflow-hidden"
                 >
                   <div>
                     {/* Top row: Status and Visibility */}
@@ -343,6 +343,7 @@ export const ProjectsPage = () => {
                         <Avatar
                           src={project.owner.Profilepic || project.owner.profilePic}
                           username={project.owner.username}
+                          name={project.owner.name}
                           size="xs"
                         />
                         <span className="truncate font-medium text-[var(--portal-heading)]">

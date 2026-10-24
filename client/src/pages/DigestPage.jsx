@@ -346,8 +346,9 @@ export const DigestPage = () => {
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <Avatar
-                            src={interaction.actor?.Profilepic}
+                            src={interaction.actor?.Profilepic || interaction.actor?.profilePic}
                             name={interaction.actor?.name || interaction.actor?.username}
+                            username={interaction.actor?.username}
                             size="xs"
                           />
                           <div className="truncate">
@@ -439,8 +440,9 @@ export const DigestPage = () => {
                     >
                       <div className="flex items-center gap-2.5">
                         <Avatar
-                          src={notif.sender?.Profilepic}
+                          src={notif.sender?.Profilepic || notif.sender?.profilePic}
                           name={notif.sender?.name || notif.sender?.username}
+                          username={notif.sender?.username}
                           size="xs"
                         />
                         <span className="text-[var(--portal-text)]">{notif.message}</span>
