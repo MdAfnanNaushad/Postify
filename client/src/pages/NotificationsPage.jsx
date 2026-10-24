@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
 import { Avatar } from '../components/common/Avatar';
+import { LottieLoader } from '../components/common';
 import { useNotifications } from '../context/NotificationContext';
 import {
   Bell,
@@ -328,8 +329,9 @@ export const NotificationsPage = () => {
 
         {/* Loading Spinner */}
         {loading && (
-          <div className="flex justify-center py-8">
-            <div className="w-7 h-7 rounded-full border-2 border-[#007aff]/30 border-t-[#007aff] animate-spin" />
+          <div className="flex flex-col items-center justify-center py-8 gap-2">
+            <LottieLoader size={96} />
+            <span className="text-xs text-[var(--portal-meta)] font-medium">Fetching notifications...</span>
           </div>
         )}
 

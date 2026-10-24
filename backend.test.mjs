@@ -11,7 +11,7 @@ describe('Postify Server API Endpoints & Data Preservation', () => {
   let samplePostId;
 
   beforeAll(async () => {
-    const uri = getMongoUri();
+    const uri = process.env.LOCAL_MONGODB_URI || 'mongodb://127.0.0.1:27017/miniproject';
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(uri);
     }

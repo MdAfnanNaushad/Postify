@@ -5,6 +5,7 @@ import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
 import { Avatar } from '../components/common/Avatar';
 import { VerificationBadge } from '../components/common/VerificationBadge';
+import { LottieLoader } from '../components/common';
 import { DigestSettingsModal } from '../components/digest/DigestSettingsModal';
 import {
   getCurrentDigest,
@@ -220,10 +221,9 @@ export const DigestPage = () => {
 
         {/* Loading State */}
         {loading && (
-          <div className="space-y-6 animate-pulse">
-            <div className="h-40 rounded-3xl bg-black/5 dark:bg-white/5 border border-[var(--portal-card-border)]" />
-            <div className="h-40 rounded-3xl bg-black/5 dark:bg-white/5 border border-[var(--portal-card-border)]" />
-            <div className="h-40 rounded-3xl bg-black/5 dark:bg-white/5 border border-[var(--portal-card-border)]" />
+          <div className="flex flex-col items-center justify-center py-20 gap-3">
+            <LottieLoader size={120} />
+            <span className="text-xs text-[var(--portal-meta)] font-medium">Compiling weekly developer digest...</span>
           </div>
         )}
 

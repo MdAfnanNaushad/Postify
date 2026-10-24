@@ -4,6 +4,7 @@ import api from '../services/api';
 import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
 import { Avatar } from '../components/common/Avatar';
+import { LottieLoader } from '../components/common';
 import { PostCard } from '../components/posts/PostCard';
 import { useAuth } from '../context/AuthContext';
 import { VerificationBadge } from '../components/common/VerificationBadge';
@@ -181,7 +182,7 @@ export const SearchPage = () => {
         {/* Loading Indicator */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-12 gap-3">
-            <div className="w-8 h-8 rounded-full border-2 border-[#007aff]/30 border-t-[#007aff] animate-spin" />
+            <LottieLoader size={120} />
             <span className="text-xs text-[var(--portal-meta)] font-medium">Searching Postify...</span>
           </div>
         )}

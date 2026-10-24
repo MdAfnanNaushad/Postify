@@ -5,6 +5,7 @@ import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
 import { Avatar } from '../components/common/Avatar';
 import { VerificationBadge } from '../components/common/VerificationBadge';
+import { LottieLoader } from '../components/common';
 import { ProjectModal } from '../components/projects/ProjectModal';
 import { useAuth } from '../context/AuthContext';
 import { getProjects, getMyProjects } from '../services/projectService';
@@ -210,21 +211,9 @@ export const ProjectsPage = () => {
 
         {/* Content State */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={i}
-                className="portal-card p-5 rounded-2xl border border-[var(--portal-card-border)] bg-[var(--portal-card)] animate-pulse h-64"
-              >
-                <div className="w-1/2 h-5 bg-black/10 dark:bg-white/10 rounded-md mb-3" />
-                <div className="w-full h-3 bg-black/10 dark:bg-white/10 rounded-md mb-2" />
-                <div className="w-3/4 h-3 bg-black/10 dark:bg-white/10 rounded-md mb-6" />
-                <div className="flex gap-2 mb-6">
-                  <div className="w-14 h-5 bg-black/10 dark:bg-white/10 rounded-md" />
-                  <div className="w-14 h-5 bg-black/10 dark:bg-white/10 rounded-md" />
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-col items-center justify-center py-16 gap-3">
+            <LottieLoader size={110} />
+            <span className="text-xs text-[var(--portal-meta)] font-medium">Discovering projects...</span>
           </div>
         ) : projects.length === 0 ? (
           <div className="portal-card p-12 text-center rounded-3xl border border-dashed border-[var(--portal-card-border)] bg-[var(--portal-card)]/50">

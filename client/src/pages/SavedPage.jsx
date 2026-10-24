@@ -15,6 +15,7 @@ import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
 import PostCard from '../components/posts/PostCard';
 import { LoadingSkeleton, EmptyState, ConfirmationDialog } from '../components/common/Feedback';
+import { LottieLoader } from '../components/common';
 import { CollectionModal } from '../components/saved/CollectionModal';
 import {
   getBookmarks,
@@ -300,8 +301,9 @@ export const SavedPage = () => {
 
         {/* Content list */}
         {loading && bookmarks.length === 0 ? (
-          <div className="space-y-4">
-            <LoadingSkeleton count={3} />
+          <div className="flex flex-col items-center justify-center py-16 gap-3">
+            <LottieLoader size={110} />
+            <span className="text-xs text-[var(--portal-meta)] font-medium">Retrieving saved bookmarks...</span>
           </div>
         ) : filteredBookmarks.length > 0 ? (
           <div className="space-y-5">

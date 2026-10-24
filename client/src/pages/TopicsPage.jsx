@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { Layout } from '../components/layout/Layout';
 import { PageContainer } from '../components/common/PageContainer';
+import { LottieLoader } from '../components/common';
 import { Hash, TrendingUp, Sparkles, ArrowRight, Layers } from 'lucide-react';
 
 export const TopicsPage = () => {
@@ -50,7 +51,7 @@ export const TopicsPage = () => {
         {/* Loading state */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <div className="w-8 h-8 rounded-full border-2 border-[#007aff]/30 border-t-[#007aff] animate-spin" />
+            <LottieLoader size={110} />
             <span className="text-xs text-[var(--portal-meta)] font-medium">Indexing topics...</span>
           </div>
         )}

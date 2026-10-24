@@ -10,5 +10,6 @@ export { ThemeToggle } from './ThemeToggle';
 export { LoadingSkeleton, EmptyState, ErrorMessage, ConfirmationDialog } from './Feedback';
 export { MarkdownContent } from './MarkdownContent';
 export { LoadingScreen } from './LoadingScreen';
+export { LottieLoader } from './LottieLoader';
 export { ErrorBoundary } from './ErrorBoundary';
 export { ProjectStatusBadge, STATUS_CONFIG, normalizeStatus, getStatusConfig } from '../projects/ProjectStatusBadge';
