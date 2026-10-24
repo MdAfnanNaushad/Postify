@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SocketProvider } from './context/SocketContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 import './index.css';
 import App from './App.jsx';
 
@@ -15,11 +16,13 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <SocketProvider>
-              <NotificationProvider>
-                <App />
-              </NotificationProvider>
-            </SocketProvider>
+            <AdminAuthProvider>
+              <SocketProvider>
+                <NotificationProvider>
+                  <App />
+                </NotificationProvider>
+              </SocketProvider>
+            </AdminAuthProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

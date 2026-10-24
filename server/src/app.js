@@ -23,6 +23,8 @@ const projectRoutes = require('./routes/projectRoutes');
 const digestRoutes = require('./routes/digestRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const moderationRoutes = require('./routes/moderationRoutes');
+const adminRoutes = require('./routes/admin/adminRoutes');
+const { telemetryMiddleware } = require('./middleware/adminTelemetry');
 
 const app = express();
 
@@ -128,6 +130,9 @@ app.use(express.static(legacyPublicPath));
 // Apply general API rate limiting to /api/*
 app.use('/api', apiLimiter);
 
+// In-memory telemetry instrumentation for API traffic and latency
+app.use(telemetryMiddleware);
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -142,6 +147,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/digest', digestRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/moderation', moderationRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Server-side Social Link Previews for Non-JavaScript Crawlers & Social Bots (Phase 2B)
 const CRAWLER_USER_AGENT_REGEX =

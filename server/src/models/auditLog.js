@@ -11,7 +11,7 @@ const auditLogSchema = new mongoose.Schema(
     action: {
       type: String,
       required: [true, 'Action is required'],
-      enum: ['hide_content', 'restore_content', 'suspend_user', 'unsuspend_user', 'dismiss_report', 'assign_role'],
+      enum: ['hide_content', 'restore_content', 'suspend_user', 'unsuspend_user', 'dismiss_report', 'assign_role', 'grant_badge', 'update_badge'],
       index: true
     },
     targetType: {

@@ -34,6 +34,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    badge: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    badgeTitle: {
+      type: String,
+      trim: true,
+      default: ''
+    },
     role: {
       type: String,
       enum: ['user', 'moderator', 'admin'],

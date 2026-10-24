@@ -295,3 +295,37 @@ body::-webkit-scrollbar,
   }
 }
 
+/* ==========================================================================
+   Admin Control Center Strict 6px Border Radius & Unified Typography
+   ========================================================================== */
+.admin-portal {
+  font-family: var(--font-sans) !important;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.admin-portal .portal-card,
+.admin-portal .admin-card,
+.admin-portal button,
+.admin-portal input,
+.admin-portal select,
+.admin-portal textarea,
+.admin-portal table,
+.admin-portal .rounded-xl,
+.admin-portal .rounded-2xl,
+.admin-portal .rounded-3xl,
+.admin-portal .rounded-lg,
+.admin-portal .rounded-md {
+  border-radius: 6px !important;
+}
+
+/* Retain pill/circular indicators for mini status dots & avatars only */
+.admin-portal .status-dot,
+.admin-portal .avatar-circle,
+.admin-portal span.rounded-full.w-1\.5,
+.admin-portal span.rounded-full.w-2,
+.admin-portal span.rounded-full.w-2\.5 {
+  border-radius: 9999px !important;
+}
+

@@ -127,6 +127,20 @@ function initSocket(httpServer) {
       socket.emit('left:feed');
     });
 
+    // Join Admin Events Channel (requires role === 'admin')
+    socket.on('join:admin', () => {
+      if (!socket.user || socket.user.role !== 'admin') {
+        return socket.emit('error', { message: 'Unauthorized: Admin privileges required.' });
+      }
+      socket.join('admin_events');
+      socket.emit('joined:admin', { message: 'Subscribed to live administrative events.' });
+    });
+
+    socket.on('leave:admin', () => {
+      socket.leave('admin_events');
+      socket.emit('left:admin');
+    });
+
     socket.on('disconnect', () => {
       // Clean up socket references automatically handled by Socket.IO
     });
@@ -201,11 +215,26 @@ function broadcastDeletedReply(postId, replyId) {
   });
 }
 
+/**
+ * Safe broadcaster for administrative events (moderation, system alerts)
+ */
+function broadcastAdminEvent(eventType, payload) {
+  const activeIO = io || global.__postify_io__;
+  if (!activeIO) return;
+  activeIO.to('admin_events').emit('admin:event', {
+    type: eventType,
+    payload,
+    timestamp: new Date().toISOString()
+  });
+}
+
 module.exports = {
   initSocket,
   getIO,
   broadcastLikeUpdate,
   broadcastNewReply,
   broadcastUpdatedReply,
-  broadcastDeletedReply
+  broadcastDeletedReply,
+  broadcastAdminEvent
 };
+
