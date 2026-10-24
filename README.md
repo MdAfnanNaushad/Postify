@@ -48,38 +48,38 @@ Built with a **Twilight Editorial** design philosophy, Postify pairs classical t
 
 ```mermaid
 graph TD
-    User([Developer / Browser])
+    User(["Developer / Browser"])
     
     subgraph Client ["Client Application (React 19 + Vite 8 + Tailwind CSS 4)"]
-        Router[React Router 7]
-        AuthCtx[Auth Context & JWT]
-        ThemeCtx[Theme Context (Dark/Light)]
-        SockCtx[Socket.io Client]
-        UI[Editorial Components & Modals]
+        Router["React Router 7"]
+        AuthCtx["Auth Context & JWT"]
+        ThemeCtx["Theme Context (Dark/Light)"]
+        SockCtx["Socket.io Client"]
+        UI["Editorial Components & Modals"]
     end
 
     subgraph Server ["Backend API Gateway (Express 4 + Node.js)"]
-        Middleware[Auth JWT / Rate Limiter / Helmet]
-        API_Auth[Auth & Profile Services]
-        API_Posts[Stories & Reflection Service]
-        API_Projects[Project & BuildLog Service]
-        API_Digest[Weekly Digest Engine]
-        SockServer[Socket.io Server Hub]
+        Middleware["Auth JWT / Rate Limiter / Helmet"]
+        API_Auth["Auth & Profile Services"]
+        API_Posts["Stories & Reflection Service"]
+        API_Projects["Project & BuildLog Service"]
+        API_Digest["Weekly Digest Engine"]
+        SockServer["Socket.io Server Hub"]
     end
 
     subgraph Storage ["Data & Storage Layer"]
-        MongoDB[(MongoDB Atlas)]
-        MediaStore[(ImageKit / Uploads)]
-        EmailService[Resend Email Gateway]
+        MongoDB[("MongoDB Atlas")]
+        MediaStore[("ImageKit / Uploads")]
+        EmailService["Resend Email Gateway"]
     end
 
-    User <-->|HTTPS / WSS| Router
+    User <-->|"HTTPS / WSS"| Router
     Router --> UI
     UI <--> AuthCtx
     UI <--> SockCtx
     
-    Client <-->|REST API JSON| Middleware
-    SockCtx <-->|WebSocket Stream| SockServer
+    Client <-->|"REST API JSON"| Middleware
+    SockCtx <-->|"WebSocket Stream"| SockServer
 
     Middleware --> API_Auth
     Middleware --> API_Posts
