@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ProtectedRoute, PublicOnlyRoute } from './components/layout/ProtectedRoute';
+import { LoadingScreen, ErrorBoundary } from './components/common';
 
 // Route-level code splitting to optimize bundle size and load performance
 const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
@@ -20,20 +21,15 @@ const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage').then(m 
 const BuildLogDetailPage = lazy(() => import('./pages/BuildLogDetailPage').then(m => ({ default: m.BuildLogDetailPage })));
 const DigestPage = lazy(() => import('./pages/DigestPage').then(m => ({ default: m.DigestPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
-
-const RouteLoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-[var(--portal-bg)] text-[var(--portal-meta)]">
-    <div className="flex flex-col items-center gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-[#007aff]/30 border-t-[#007aff] animate-spin" />
-      <span className="text-xs font-medium tracking-wide">Loading Postify...</span>
-    </div>
-  </div>
-);
+const ServerErrorPage = lazy(() => import('./pages/ServerErrorPage').then(m => ({ default: m.ServerErrorPage })));
+const MaintenancePage = lazy(() => import('./pages/MaintenancePage').then(m => ({ default: m.MaintenancePage })));
+const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage').then(m => ({ default: m.ComingSoonPage })));
 
 function App() {
   return (
-    <Suspense fallback={<RouteLoadingFallback />}>
-      <Routes>
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingScreen fullScreen={true} />}>
+        <Routes>
         {/* Public Pages */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/feed" element={<HomePage />} />
@@ -108,11 +104,18 @@ function App() {
           }
         />
 
+        {/* System & Status Pages */}
+        <Route path="/500" element={<ServerErrorPage />} />
+        <Route path="/maintenance" element={<MaintenancePage />} />
+        <Route path="/coming-soon" element={<ComingSoonPage />} />
+
         {/* 404 Route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
+  </ErrorBoundary>
   );
 }
 
 export default App;
+

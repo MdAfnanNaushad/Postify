@@ -9,3 +9,5 @@ export { VerificationBadge } from './VerificationBadge';
 export { ThemeToggle } from './ThemeToggle';
 export { LoadingSkeleton, EmptyState, ErrorMessage, ConfirmationDialog } from './Feedback';
 export { MarkdownContent } from './MarkdownContent';
+export { LoadingScreen } from './LoadingScreen';
+export { ErrorBoundary } from './ErrorBoundary';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, FolderGit2, Check, Globe, Lock, Code2, Link as LinkIcon, AlertCircle } from 'lucide-react';
 import { createProject, updateProject } from '../../services/projectService';
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, BookOpen, Check, Tag, Pin, AlertCircle, Eye, Edit3, Sparkles } from 'lucide-react';
 import { createBuildLog, updateBuildLog } from '../../services/projectService';
 import { MarkdownContent } from '../common/MarkdownContent';
